@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { ReactNode } from "react";
 
 interface HeroVideoProps {
@@ -74,13 +75,13 @@ export default function HeroVideo({
             className="mt-12 flex flex-col sm:flex-row gap-4"
           >
             {cta.map((c) => (
-              <a
+              <Link
                 key={c.label}
-                href={c.to}
+                to={c.to}
                 className="eyebrow border border-cream/40 text-cream px-8 py-4 hover:bg-cream hover:text-forest transition-colors duration-700 ease-luxury"
               >
                 {c.label}
-              </a>
+              </Link>
             ))}
           </motion.div>
         )}

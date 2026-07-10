@@ -32,7 +32,7 @@ export default function Home() {
     { title: "New Arrivals", image: watches[3]?.image, video: watches[3]?.video },
     { title: "Best Sellers", image: watches[0]?.image, video: watches[0]?.video },
     { title: "Signature Timepieces", image: watches[7]?.image, video: watches[7]?.video },
-    { title: "Wedding Collection", image: moissanite[2]?.image, video: moissanite[2]?.video },
+    { title: "Her Collection", image: moissanite[2]?.image, video: moissanite[2]?.video },
     { title: "Everyday Luxury", image: moissanite[8]?.image, video: moissanite[8]?.video },
     { title: "Limited Edition", image: watches[1]?.image, video: watches[1]?.video },
   ];

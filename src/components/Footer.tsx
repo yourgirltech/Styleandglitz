@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { subscribeToNewsletter } from "@/lib/newsletter";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [subscribing, setSubscribing] = useState(false);
+  const [subscribeError, setSubscribeError] = useState("");
 
   return (
     <footer className="bg-forest text-cream/90">
@@ -41,11 +44,16 @@ export default function Footer() {
         <div className="md:col-span-2">
           <p className="eyebrow text-gold mb-5">Follow</p>
           <ul className="space-y-3 text-sm text-cream/70">
-            <li><a href="#" className="hover:text-cream transition-colors">Instagram</a></li>
-            <li><a href="#" className="hover:text-cream transition-colors">WhatsApp</a></li>
-            <li><a href="#" className="hover:text-cream transition-colors">TikTok</a></li>
-            <li><a href="#" className="hover:text-cream transition-colors">Pinterest</a></li>
-            <li><a href="#" className="hover:text-cream transition-colors">Facebook</a></li>
+            <li>
+              <a href="https://instagram.com/styleandglitzz" target="_blank" rel="noreferrer" className="hover:text-cream transition-colors">
+                Instagram
+              </a>
+            </li>
+            <li>
+              <a href="https://wa.me/2349036423694" target="_blank" rel="noreferrer" className="hover:text-cream transition-colors">
+                WhatsApp
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -55,25 +63,37 @@ export default function Footer() {
           {submitted ? (
             <p className="text-sm text-gold">You're on the list.</p>
           ) : (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setSubmitted(true);
-              }}
-              className="flex border-b border-cream/30 focus-within:border-gold transition-colors"
-            >
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email address"
-                className="bg-transparent flex-1 py-2 text-sm placeholder:text-cream/40 focus:outline-none"
-              />
-              <button type="submit" className="text-gold text-sm eyebrow pb-2">
-                Join
-              </button>
-            </form>
+            <>
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setSubscribeError("");
+                  setSubscribing(true);
+                  try {
+                    await subscribeToNewsletter(email);
+                    setSubmitted(true);
+                  } catch (err) {
+                    setSubscribeError(err instanceof Error ? err.message : "Something went wrong.");
+                  } finally {
+                    setSubscribing(false);
+                  }
+                }}
+                className="flex border-b border-cream/30 focus-within:border-gold transition-colors"
+              >
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email address"
+                  className="bg-transparent flex-1 py-2 text-sm placeholder:text-cream/40 focus:outline-none"
+                />
+                <button type="submit" disabled={subscribing} className="text-gold text-sm eyebrow pb-2 disabled:opacity-50">
+                  {subscribing ? "..." : "Join"}
+                </button>
+              </form>
+              {subscribeError && <p className="text-xs text-red-400 mt-2">{subscribeError}</p>}
+            </>
           )}
         </div>
       </div>
