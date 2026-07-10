@@ -2,7 +2,7 @@
 
 A cinematic e-commerce front-end for fine watches and GRA-certified VVS1 moissanite jewellery.
 Built with React + TypeScript + Vite + Tailwind + Framer Motion, structured for Supabase,
-Stripe, and the Instagram Graph API to be wired in next.
+paystack, and the Instagram Graph API to be wired in next.
 
 ## Pages in this build
 
@@ -27,25 +27,19 @@ npm run dev
 
 ## Dropping in your real photos and videos
 
-See `public/media/README.md`. Every product's expected filename is defined in
-`src/data/watches.ts` and `src/data/moissanite.ts` — copy files in with the same names
-and everything lights up with no code changes.
-
+See `public/media/README.md`
+`src/data/watches.ts` and `src/data/moissanite.ts` 
 ## What's stubbed, ready to connect
 
-- **Supabase** (`src/lib/supabase.ts`) — client initializes automatically once
-  `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` are set. Suggested tables are listed inline.
-  This is also where an **admin dashboard** (add/edit/delete product, inventory, orders,
-  customers, wishlist analytics) would read and write from.
-- **Instagram Graph API** (`src/lib/instagram.ts`) — `fetchRecentInstagramMedia()` is ready to
-  call once `VITE_IG_USER_ID` / `VITE_IG_ACCESS_TOKEN` are set. Until then, the Instagram grid
-  on the homepage falls back to a product-based placeholder feed.
-- **Stripe** — the Cart page's Checkout button is wired to nothing yet; swap in
-  `@stripe/stripe-js` + a Checkout Session once payments are ready.
-
+- **Supabase** (`src/lib/supabase.ts`) — 
+  `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` 
+  .
+- **Instagram Graph API** (`src/lib/instagram.ts`) — `fetchRecentInstagramMedia()`
+  call once `VITE_IG_USER_ID` / `VITE_IG_ACCESS_TOKEN`
+  `
 ## Deploying
 
-This is a standard Vite app — connect the repo to Netlify (or Vercel) and use:
+
 
 - Build command: `npm run build`
 - Publish directory: `dist`
@@ -53,7 +47,7 @@ This is a standard Vite app — connect the repo to Netlify (or Vercel) and use:
 ## Design tokens
 
 Colors, type, and motion are defined once in `tailwind.config.ts`:
-- Forest green / sage / warm cream / soft stone / muted gold / deep graphite
+- Midnight Navy / Slate Blue/ Soft Ivory/ soft stone / muted gold / deep graphite
 - Cormorant Garamond (headings), DM Serif Display (subheadings), Inter (body),
   IBM Plex Mono (prices, numbers, eyebrows)
 - A single easing curve (`ease-luxury`) used everywhere so motion feels consistent
