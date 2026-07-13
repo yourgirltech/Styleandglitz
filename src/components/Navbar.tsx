@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCustomerAuth } from "@/context/CustomerAuthContext";
+import { useCartFX } from "@/context/CartFXContext";
 
 const links = [
   { to: "/watches", label: "Watches" },
@@ -19,6 +20,7 @@ export default function Navbar() {
   const { itemCount } = useCart();
   const { productIds } = useWishlist();
   const { session } = useCustomerAuth();
+  const { cartIconRef, bounceKey } = useCartFX();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -109,7 +111,9 @@ export default function Navbar() {
                 scrolled ? "text-graphite/80 hover:text-forest" : "text-cream/90 hover:text-gold"
               }`}
             >
-              <BagIcon />
+              <div ref={cartIconRef} key={bounceKey} className={bounceKey ? "animate-cart-bounce" : ""}>
+                <BagIcon />
+              </div>
               {itemCount > 0 && (
                 <span className="absolute -top-2 -right-2 text-[10px] font-mono bg-gold text-graphite w-4 h-4 rounded-full flex items-center justify-center">
                   {itemCount}

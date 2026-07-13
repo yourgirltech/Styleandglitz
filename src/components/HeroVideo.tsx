@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 
 interface HeroVideoProps {
   video: string;
@@ -19,6 +19,21 @@ export default function HeroVideo({
   cta,
   height = "h-screen",
 }: HeroVideoProps) {
+  const btnRefs = useRef<Record<number, HTMLAnchorElement | null>>({});
+
+  const handleBtnMove = (i: number) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const el = btnRefs.current[i];
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) * 0.25;
+    const y = (e.clientY - rect.top - rect.height / 2) * 0.25;
+    el.style.transform = `translate(${x}px, ${y}px)`;
+  };
+  const handleBtnLeave = (i: number) => () => {
+    const el = btnRefs.current[i];
+    if (el) el.style.transform = "translate(0,0)";
+  };
+
   return (
     <section className={`relative w-full ${height} min-h-[560px] bg-graphite overflow-hidden`}>
       {/* Backdrop: the same clip, blurred and over-scaled, fills every edge so the
@@ -74,13 +89,22 @@ export default function HeroVideo({
             transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="mt-12 flex flex-col sm:flex-row gap-4"
           >
-            {cta.map((c) => (
+            {cta.map((c, i) => (
               <Link
                 key={c.label}
                 to={c.to}
-                className="eyebrow border border-cream/40 text-cream px-8 py-4 hover:bg-cream hover:text-forest transition-colors duration-700 ease-luxury"
+                ref={(el) => { btnRefs.current[i] = el; }}
+                onMouseMove={handleBtnMove(i)}
+                onMouseLeave={handleBtnLeave(i)}
+                style={{ transition: "transform 120ms ease-out, background-color 500ms ease, color 500ms ease, border-color 500ms ease" }}
+                className="group relative overflow-hidden eyebrow border border-cream/40 text-cream px-8 py-4 hover:bg-cream hover:text-forest hover:border-cream"
               >
-                {c.label}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[900ms] ease-luxury"
+                  style={{ background: "linear-gradient(115deg, transparent 40%, rgba(15,23,42,0.12) 50%, transparent 60%)" }}
+                />
+                <span className="relative">{c.label}</span>
               </Link>
             ))}
           </motion.div>

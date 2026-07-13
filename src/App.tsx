@@ -20,6 +20,8 @@ import RequireAdmin from "@/components/RequireAdmin";
 import AdminLogin from "@/pages/admin/AdminLogin";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminProductForm from "@/pages/admin/AdminProductForm";
+import { CartFXProvider } from "@/context/CartFXContext";
+import CartFXOverlay from "@/components/CartFXOverlay";
 
 function PageTransition({ children }: { children: React.ReactNode }) {
   return (
@@ -34,12 +36,7 @@ function PageTransition({ children }: { children: React.ReactNode }) {
   );
 }
 
-/**
- * React Router doesn't scroll to an in-page section automatically. This
- * watches the pathname/hash and, once the destination page has actually
- * rendered, scrolls to the matching #id (About / Reviews / Contact all live
- * as sections on Home) or resets to the top on a plain route change.
- */
+
 function ScrollManager() {
   const location = useLocation();
 
@@ -72,41 +69,44 @@ export default function App() {
 
   return (
     <AdminAuthProvider>
-      <div className="min-h-screen flex flex-col bg-cream">
-        <ScrollManager />
-        {!isAdminRoute && <DisclaimerModal />}
-        {!isAdminRoute && <Navbar />}
-        <main className="flex-1">
-          <AnimatePresence mode="wait">
-            <Routes location={location} key={location.pathname}>
-              <Route path="/" element={<PageTransition><Home /></PageTransition>} />
-              <Route path="/watches" element={<PageTransition><Watches /></PageTransition>} />
-              <Route path="/moissanite" element={<PageTransition><Moissanite /></PageTransition>} />
-              <Route path="/product/:slug" element={<PageTransition><ProductDetail /></PageTransition>} />
-              <Route path="/wishlist" element={<PageTransition><Wishlist /></PageTransition>} />
-              <Route path="/cart" element={<PageTransition><Cart /></PageTransition>} />
-              <Route path="/signup" element={<PageTransition><Signup /></PageTransition>} />
-              <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
-              <Route
-                path="/account"
-                element={
-                  <PageTransition>
-                    <RequireCustomer>
-                      <Account />
-                    </RequireCustomer>
-                  </PageTransition>
-                }
-              />
-              <Route path="/checkout/callback" element={<CheckoutCallback />} />
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin" element={<RequireAdmin><AdminDashboard /></RequireAdmin>} />
-              <Route path="/admin/products/new" element={<RequireAdmin><AdminProductForm /></RequireAdmin>} />
-              <Route path="/admin/products/:id/edit" element={<RequireAdmin><AdminProductForm /></RequireAdmin>} />
-            </Routes>
-          </AnimatePresence>
-        </main>
-        {!isAdminRoute && <Footer />}
-      </div>
+      <CartFXProvider>
+        <div className="min-h-screen flex flex-col bg-cream">
+          <ScrollManager />
+          {!isAdminRoute && <DisclaimerModal />}
+          {!isAdminRoute && <Navbar />}
+          <main className="flex-1">
+            <AnimatePresence mode="wait">
+              <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+                <Route path="/watches" element={<PageTransition><Watches /></PageTransition>} />
+                <Route path="/moissanite" element={<PageTransition><Moissanite /></PageTransition>} />
+                <Route path="/product/:slug" element={<PageTransition><ProductDetail /></PageTransition>} />
+                <Route path="/wishlist" element={<PageTransition><Wishlist /></PageTransition>} />
+                <Route path="/cart" element={<PageTransition><Cart /></PageTransition>} />
+                <Route path="/signup" element={<PageTransition><Signup /></PageTransition>} />
+                <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+                <Route
+                  path="/account"
+                  element={
+                    <PageTransition>
+                      <RequireCustomer>
+                        <Account />
+                      </RequireCustomer>
+                    </PageTransition>
+                  }
+                />
+                <Route path="/checkout/callback" element={<CheckoutCallback />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin" element={<RequireAdmin><AdminDashboard /></RequireAdmin>} />
+                <Route path="/admin/products/new" element={<RequireAdmin><AdminProductForm /></RequireAdmin>} />
+                <Route path="/admin/products/:id/edit" element={<RequireAdmin><AdminProductForm /></RequireAdmin>} />
+              </Routes>
+            </AnimatePresence>
+          </main>
+          {!isAdminRoute && <Footer />}
+        </div>
+        {!isAdminRoute && <CartFXOverlay />}
+      </CartFXProvider>
     </AdminAuthProvider>
   );
 }

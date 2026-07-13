@@ -47,7 +47,7 @@ See `public/media/README.md`
 ## Design tokens
 
 Colors, type, and motion are defined once in `tailwind.config.ts`:
-- Midnight Navy / Slate Blue/ Soft Ivory/ soft stone / muted gold / deep graphite
+- Midnight Navy / Slate Blue/ Soft Ivory/  Warm Platinum / warm gold / deep graphite
 - Cormorant Garamond (headings), DM Serif Display (subheadings), Inter (body),
   IBM Plex Mono (prices, numbers, eyebrows)
 - A single easing curve (`ease-luxury`) used everywhere so motion feels consistent

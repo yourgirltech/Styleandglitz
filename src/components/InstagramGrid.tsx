@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import type { Product } from "@/types/product";
 import { formatPrice } from "@/data/products";
 
@@ -12,45 +11,38 @@ import { formatPrice } from "@/data/products";
  */
 export default function InstagramGrid({ products }: { products: Product[] }) {
   const feed = useMemo(() => products.slice(0, 10), [products]);
-
-  const [perView, setPerView] = useState(4);
-  const [index, setIndex] = useState(0);
-  const [cardWidth, setCardWidth] = useState(0);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const gap = 20;
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [cardWidth, setCardWidth] = useState(300);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const sideScale = 0.78;
 
   useEffect(() => {
     const compute = () => {
       const w = window.innerWidth;
-      const pv = w < 640 ? 1.3 : w < 900 ? 2.2 : w < 1200 ? 3.2 : 4;
-      setPerView(pv);
-      const viewport = trackRef.current?.parentElement?.clientWidth ?? w;
-      setCardWidth((viewport - gap * (Math.floor(pv) - 1)) / pv);
+      setCardWidth(w < 480 ? 170 : w < 768 ? 210 : w < 1100 ? 250 : 280);
     };
     compute();
     window.addEventListener("resize", compute);
     return () => window.removeEventListener("resize", compute);
   }, []);
 
-  const maxIndex = Math.max(0, feed.length - Math.floor(perView));
-
-  const goTo = (i: number) => setIndex(Math.min(Math.max(i, 0), maxIndex));
-
-  // Autoplay — pauses whenever the pointer is over the carousel
-  const [paused, setPaused] = useState(false);
   useEffect(() => {
-    if (paused) return;
+    if (paused || feed.length === 0) return;
     const id = setInterval(() => {
-      setIndex((i) => (i >= maxIndex ? 0 : i + 1));
-    }, 3800);
+      setActive((a) => (a + 1) % feed.length);
+    }, 3600);
     return () => clearInterval(id);
-  }, [paused, maxIndex]);
+  }, [paused, feed.length]);
 
-  const step = cardWidth + gap;
-  const dragConstraint = maxIndex * step;
+  const gap = 84;
+  const cardHeight = cardWidth * 1.25;
+  const sideOffset = cardWidth * sideScale + gap;
+  const stageWidth = cardWidth + sideOffset * 2 + 20;
+  const stageHeight = cardHeight + 24;
 
   return (
-    <section id="instagram" className="py-28 bg-cream">
+    <section id="instagram" className="py-28 bg-cream overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-14">
           <p className="eyebrow text-gold mb-4">Shop Our Instagram</p>
@@ -58,90 +50,129 @@ export default function InstagramGrid({ products }: { products: Product[] }) {
         </div>
 
         <div
-          className="relative"
+          ref={wrapRef}
+          className="relative mx-auto overflow-hidden"
+          style={{ width: stageWidth, height: stageHeight }}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          {/* Prev / Next */}
-          <button
-            aria-label="Previous"
-            onClick={() => goTo(index - 1)}
-            disabled={index === 0}
-            className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-cream border border-gold/50 items-center justify-center text-forest hover:bg-forest hover:text-cream hover:border-forest transition-colors duration-500 disabled:opacity-30 disabled:pointer-events-none"
-          >
-            <ArrowIcon direction="left" />
-          </button>
-          <button
-            aria-label="Next"
-            onClick={() => goTo(index + 1)}
-            disabled={index === maxIndex}
-            className="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-cream border border-gold/50 items-center justify-center text-forest hover:bg-forest hover:text-cream hover:border-forest transition-colors duration-500 disabled:opacity-30 disabled:pointer-events-none"
-          >
-            <ArrowIcon direction="right" />
-          </button>
+          {feed.map((p, i) => {
+            let delta = (i - active + feed.length) % feed.length;
+            if (delta > feed.length / 2) delta -= feed.length;
 
-          <div className="overflow-hidden">
-            {cardWidth > 0 && (
-              <motion.div
-                ref={trackRef}
-                className="flex"
-                style={{ gap }}
-                drag="x"
-                dragConstraints={{ left: -dragConstraint, right: 0 }}
-                dragElastic={0.05}
-                animate={{ x: -index * step }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                onDragEnd={(_, info) => {
-                  const movedBy = Math.round(-info.offset.x / step);
-                  goTo(index + movedBy);
+            let x = 0;
+            let opacity = 0;
+            let scale = sideScale * 0.9;
+            let z = 0;
+            let pointerEvents: "auto" | "none" = "none";
+            let isActive = false;
+
+            if (delta === 0) {
+              x = 0;
+              opacity = 1;
+              scale = 1;
+              z = 3;
+              pointerEvents = "auto";
+              isActive = true;
+            } else if (delta === 1) {
+              x = sideOffset;
+              opacity = 0.55;
+              scale = sideScale;
+              z = 2;
+              pointerEvents = "auto";
+            } else if (delta === -1) {
+              x = -sideOffset;
+              opacity = 0.55;
+              scale = sideScale;
+              z = 2;
+              pointerEvents = "auto";
+            } else {
+              x = delta > 0 ? sideOffset * 1.6 : -sideOffset * 1.6;
+              opacity = 0;
+              z = 0;
+            }
+
+            return (
+              <Link
+                key={p.id}
+                to={`/product/${p.slug}`}
+                onClick={(e) => {
+                  if (delta === 1 || delta === -1) {
+                    e.preventDefault();
+                    setActive(i);
+                  }
+                }}
+                className="absolute top-3 left-1/2"
+                style={{
+                  width: cardWidth,
+                  height: cardHeight,
+                  marginLeft: -cardWidth / 2,
+                  transform: `translateX(${x}px) scale(${scale})`,
+                  opacity,
+                  zIndex: z,
+                  pointerEvents,
+                  transition: "transform 800ms cubic-bezier(0.22,1,0.36,1), opacity 800ms cubic-bezier(0.22,1,0.36,1)",
                 }}
               >
-                {feed.map((p) => (
-                  <Link
-                    key={p.id}
-                    to={`/product/${p.slug}`}
-                    style={{ width: cardWidth }}
-                    className="group relative shrink-0 select-none"
-                  >
-                    <div className="relative aspect-[4/5] overflow-hidden">
-                      <img
-                        src={p.image}
-                        alt={p.name}
-                        loading="lazy"
-                        draggable={false}
-                        className="h-full w-full object-cover transition-transform duration-[1200ms] ease-luxury group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-forest/0 group-hover:bg-forest/50 transition-colors duration-500" />
-                      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <InstaIcon />
-                      </div>
-                      <div className="absolute inset-x-0 bottom-0 p-3 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-1 group-hover:translate-y-0">
-                        <p className="text-cream text-xs font-heading leading-tight truncate">
-                          {p.name}
-                        </p>
-                        <p className="text-gold font-mono text-[10px] mt-0.5">
-                          {formatPrice(p.price)}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </motion.div>
-            )}
-          </div>
+                <div
+                  className="relative w-full h-full overflow-hidden"
+                  style={{
+                    border: isActive ? "1px solid #C9A227" : "1px solid transparent",
+                    boxShadow: isActive ? "0 24px 48px rgba(15,23,42,0.22)" : "none",
+                  }}
+                >
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    loading="lazy"
+                    draggable={false}
+                    className="h-full w-full object-cover"
+                    style={{
+                      transform: isActive ? "scale(1.06)" : "scale(1)",
+                      transition: "transform 3600ms ease-out",
+                    }}
+                  />
+                  <div
+                    className="absolute inset-0 bg-forest transition-opacity duration-700"
+                    style={{ opacity: isActive ? 0 : 0.38, mixBlendMode: "multiply" }}
+                  />
 
-          {/* Dot pagination */}
-          <div className="flex justify-center gap-2 mt-8">
-            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
-              <button
-                key={i}
-                aria-label={`Go to slide ${i + 1}`}
-                onClick={() => goTo(i)}
-                className={`h-1.5 rounded-full transition-all duration-500 ${
-                  i === index ? "w-8 bg-gold" : "w-1.5 bg-stone-dark"
-                }`}
-              />
-            ))}
+                  {isActive && (
+                    <>
+                      <CornerMark className="top-2 left-2" />
+                      <CornerMark className="top-2 right-2 rotate-90" />
+                      <CornerMark className="bottom-2 left-2 -rotate-90" />
+                      <CornerMark className="bottom-2 right-2 rotate-180" />
+                    </>
+                  )}
+
+                  <div
+                    className="absolute inset-x-0 bottom-0 p-4 transition-opacity duration-500"
+                    style={{ opacity: isActive ? 1 : 0 }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-t from-graphite/80 via-graphite/15 to-transparent -z-10" />
+                    <p className="eyebrow text-gold/90 mb-1">{p.subCategory || p.brandLine}</p>
+                    <p className="text-cream text-sm font-heading leading-tight truncate">{p.name}</p>
+                    <div className="flex items-center justify-between mt-1">
+                      <p className="text-gold font-mono text-xs">{formatPrice(p.price)}</p>
+                      <span className="text-cream/70 text-[10px] eyebrow">View piece →</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className="flex items-center justify-center gap-4 mt-8">
+          <span className="font-mono text-xs text-graphite/40">
+            {String(active + 1).padStart(2, "0")} — {String(feed.length).padStart(2, "0")}
+          </span>
+          <div className="w-32 h-px bg-stone-dark relative overflow-hidden">
+            <div
+              className="absolute inset-y-0 left-0 bg-gold transition-all duration-700 ease-luxury"
+              style={{ width: `${((active + 1) / feed.length) * 100}%` }}
+            />
           </div>
         </div>
       </div>
@@ -149,20 +180,10 @@ export default function InstagramGrid({ products }: { products: Product[] }) {
   );
 }
 
-function InstaIcon() {
+function CornerMark({ className = "" }: { className?: string }) {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.5" cy="6.5" r="0.8" fill="white" stroke="none" />
-    </svg>
-  );
-}
-
-function ArrowIcon({ direction }: { direction: "left" | "right" }) {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      {direction === "left" ? <path d="M15 6l-6 6 6 6" /> : <path d="M9 6l6 6-6 6" />}
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className={`absolute text-gold ${className}`}>
+      <path d="M1 15V5a4 4 0 0 1 4-4h10" stroke="currentColor" strokeWidth="1" />
     </svg>
   );
 }
