@@ -36,8 +36,7 @@ export default function HeroVideo({
 
   return (
     <section className={`relative w-full ${height} min-h-[560px] bg-graphite overflow-hidden`}>
-      {/* Backdrop: the same clip, blurred and over-scaled, fills every edge so the
-          section always reads full-bleed even though the source footage is portrait. */}
+      {/* Backdrop: Hero video */}
       <video
         autoPlay
         muted
@@ -50,7 +49,7 @@ export default function HeroVideo({
         <source src={video} type="video/mp4" />
       </video>
 
-      {/* Foreground: the real subject, shown uncropped instead of zoomed/cut off. */}
+     
       <video
         autoPlay
         muted

@@ -39,10 +39,7 @@ export default function Home() {
 
   const featured = [...watches.slice(0, 8), ...moissanite.slice(0, 7)];
 
-  // Alternates watches and moissanite so the carousel always includes both —
-  // the raw `products` list from Supabase is sorted alphabetically by name,
-  // and a lot of moissanite pieces (3D Cross Pendant, 4mm Tennis...) sort
-  // ahead of every watch, which is why watches were disappearing from it.
+  
   const instagramFeed: typeof products = [];
   const maxLen = Math.max(watches.length, moissanite.length);
   for (let i = 0; i < maxLen && instagramFeed.length < 12; i++) {

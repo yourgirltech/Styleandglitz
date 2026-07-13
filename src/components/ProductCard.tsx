@@ -78,7 +78,7 @@ export default function ProductCard({ product }: { product: Product }) {
         onMouseMove={handleMove}
       >
         <Link to={`/product/${product.slug}`} className="block">
-          {/* Mat / frame padding around the image, like a boutique catalog card */}
+          {/* Mat / frame padding around the image*/}
           <div className="p-3">
             <div className="relative aspect-[4/4.6] overflow-hidden bg-stone">
               <img

@@ -3,12 +3,7 @@ import { Link } from "react-router-dom";
 import type { Product } from "@/types/product";
 import { formatPrice } from "@/data/products";
 
-/**
- * Placeholder feed. In production, replace this with a fetch to the
- * Instagram Graph API's /me/media edge (see src/lib/instagram.ts) and map
- * each returned media item's `permalink` back to a matching product by tag
- * or caption keyword.
- */
+
 export default function InstagramGrid({ products }: { products: Product[] }) {
   const feed = useMemo(() => products.slice(0, 10), [products]);
   const [active, setActive] = useState(0);

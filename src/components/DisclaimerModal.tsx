@@ -7,8 +7,7 @@ export const DISCLAIMER_TEXT =
 export default function DisclaimerModal() {
   const [open, setOpen] = useState(false);
 
-  // Shows once every time the site is loaded (not gated behind storage), so
-  // it reliably greets every visitor on entry as requested.
+  // Shows once every time the site is loaded 
   useEffect(() => {
     const timer = setTimeout(() => setOpen(true), 400);
     return () => clearTimeout(timer);

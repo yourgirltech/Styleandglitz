@@ -3,8 +3,6 @@ import type { Product } from "@/types/product";
 /**
  * Media convention: every asset below expects two files dropped into
  * /public/media/watches/ using the exact name shown in `image` / `video`.
- * This mirrors the client's existing asset folder ("style and glitz media")
- * so files can be copied over with zero renaming.
  */
 const path = (file: string) => `/media/watches/${file}`;
 

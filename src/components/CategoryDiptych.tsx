@@ -31,9 +31,7 @@ function Panel({ to, title, count, image, video, clipPath, align, focus = "cente
       style={{ clipPath }}
       className="group absolute inset-0 block overflow-hidden bg-graphite"
     >
-      {/* Sized to roughly this panel's own visible share of the diptych — not
-          the full container — so a square/portrait source photo doesn't get
-          forced into an ultra-wide box and blown up past recognition. */}
+      
       <div className={`absolute inset-y-0 w-[62%] ${align === "left" ? "left-0" : "right-0"}`}>
         <img
           src={image}

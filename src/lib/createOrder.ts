@@ -42,16 +42,14 @@ export async function createOrderFromCart(
   const { error: itemsError } = await supabase.from("order_items").insert(items);
   if (itemsError) throw itemsError;
 
-  // Reduce stock for each purchased item via the secure function above —
-  // not a direct table write.
+  
   for (const item of items) {
     const { error: stockError } = await supabase.rpc("decrement_product_stock", {
       p_product_id: item.product_id,
       p_quantity: item.quantity,
     });
     if (stockError) {
-      // The order and payment are already confirmed at this point — a
-      // stock-sync hiccup shouldn't block the customer's confirmation.
+      
       console.error(`Failed to update stock for ${item.product_id}:`, stockError.message);
     }
   }

@@ -37,7 +37,7 @@ export default function CheckoutCallback() {
           return;
         }
 
-        // The cart lines travel through Paystack itself (as metadata we
+        // The cart lines travel through Paystack itself (as metadata
         // sent when initializing payment), not through browser storage —
         // this is what Paystack hands back, confirmed and authoritative.
         const cartLines = result.metadata?.cart;

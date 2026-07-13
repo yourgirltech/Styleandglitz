@@ -6,8 +6,7 @@ export async function signUpCustomer(email: string, password: string, fullName: 
   const { data, error } = await supabase.auth.signUp({ email, password });
   if (error) throw error;
 
-  // Create the profile row right away (not via a DB trigger, since this
-  // Supabase project is shared with another app — see earlier note).
+  
   if (data.user) {
     const { error: profileError } = await supabase
       .from("profiles")
