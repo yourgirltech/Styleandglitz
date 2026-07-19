@@ -1,53 +1,49 @@
 # Style & Glitz — Luxury Digital Flagship Store
 
-A cinematic e-commerce front-end for fine watches and GRA-certified VVS1 moissanite jewellery.
-Built with React + TypeScript + Vite + Tailwind + Framer Motion, structured for Supabase,
-paystack, and the Instagram Graph API to be wired in next.
+A full-stack e-commerce site for fine watches and GRA-certified VVS1 moissanite jewelry — built as a cinematic, boutique-style storefront rather than a generic shop template, with a complete backend (accounts, admin dashboard, and payments) behind it.
 
-## Pages in this build
+**Live site:** https://styleandglitz.netlify.app
 
-- **Home** — cinematic hero, luxury collections, shop-by-category, featured products, Our Story,
-  Reviews, Shop-the-Instagram, and Personal Shopping Concierge (About / Reviews / Contact live
-  here as sections, not separate routes)
-- **Watches** — hero + brand-category filters (Rolex, Patek Philippe, Audemars Piguet, Cartier,
-  Hublot, G-Shock inspired) + product grid with the hover-to-video card interaction
-- **Moissanite** — hero + jewellery-category filters + product grid, where every card **always**
-  plays its sparkle video (no hover required) since that's the whole point of the stone
-- **Wishlist** and **Cart** — fully working with in-memory state (see `src/context`)
-- **Product Detail** — supporting route every product card links to (image/video toggle,
-  materials, GRA certificate block, related products)
+---
 
-## Getting started
+## Tech Stack
+
+**Frontend**
+- React + TypeScript, built with [Vite](https://vitejs.dev)
+- [Tailwind CSS](https://tailwindcss.com) for styling
+- [Framer Motion](https://www.framer.com/motion/) for page transitions and reveal animations
+- [React Router](https://reactrouter.com) for client-side routing
+
+**Backend / Infrastructure**
+- **[Supabase](https://supabase.com)** — Postgres database, Auth (separate admin and customer logins), Storage (product image/video uploads), and Edge Functions (serverless functions for payment processing)
+- **[Paystack](https://paystack.com)** — payment processing (chosen over Stripe, which doesn't support Nigerian merchants directly)
+- **[Netlify](https://netlify.com)** — hosting, with automatic deploys on every push to GitHub
+
+---
+
+## Design System
+
+| Token | Hex | Used for |
+|---|---|---|
+| `forest` (primary) | `#0F172A` Midnight Navy | Headings, dark backgrounds, primary buttons |
+| `sage` (secondary) | `#334155` Slate Blue | Muted text, secondary accents |
+| `cream` (base) | `#FAF8F4` Soft Ivory | Site-wide background |
+| `stone` (neutral) | `#E5E7EB` Warm Platinum | Card backgrounds, dividers |
+| `gold` (accent) | `#C9A227` Brushed Gold | Prices, borders, hover states, badges |
+| `graphite` (ink) | `#14171F` | Body text |
+
+**Typography:** Cormorant Garamond (headings), DM Serif Display (subheadings), Inter (body), IBM Plex Mono (prices, eyebrows, numeric labels)
+
+All tokens are defined once in `tailwind.config.ts` — no hardcoded hex values should appear in component files.
+
+---
+
+## Getting Started
 
 ```bash
 npm install
-cp .env.example .env.local   # fill in Supabase / Instagram / Stripe keys when ready
+cp .env.example .env.local  
 npm run dev
 ```
 
-## Dropping in your real photos and videos
-
-See `public/media/README.md`
-`src/data/watches.ts` and `src/data/moissanite.ts` 
-## What's stubbed, ready to connect
-
-- **Supabase** (`src/lib/supabase.ts`) — 
-  `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` 
-  .
-- **Instagram Graph API** (`src/lib/instagram.ts`) — `fetchRecentInstagramMedia()`
-  call once `VITE_IG_USER_ID` / `VITE_IG_ACCESS_TOKEN`
-  `
-## Deploying
-
-
-
-- Build command: `npm run build`
-- Publish directory: `dist`
-
-## Design tokens
-
-Colors, type, and motion are defined once in `tailwind.config.ts`:
-- Midnight Navy / Slate Blue/ Soft Ivory/  Warm Platinum / warm gold / deep graphite
-- Cormorant Garamond (headings), DM Serif Display (subheadings), Inter (body),
-  IBM Plex Mono (prices, numbers, eyebrows)
-- A single easing curve (`ease-luxury`) used everywhere so motion feels consistent
+### Required environment variables (`.env.local`)
