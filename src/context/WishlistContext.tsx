@@ -1,33 +1,12 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
-
-interface WishlistContextValue {
-  productIds: string[];
-  toggleWishlist: (productId: string) => void;
-  isWishlisted: (productId: string) => boolean;
-}
-
-const WishlistContext = createContext<WishlistContextValue | undefined>(undefined);
-
-export function WishlistProvider({ children }: { children: ReactNode }) {
-  const [productIds, setProductIds] = useState<string[]>([]);
-
-  const toggleWishlist = (productId: string) => {
-    setProductIds((prev) =>
-      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
-    );
-  };
-
-  const isWishlisted = (productId: string) => productIds.includes(productId);
-
-  return (
-    <WishlistContext.Provider value={{ productIds, toggleWishlist, isWishlisted }}>
-      {children}
-    </WishlistContext.Provider>
-  );
-}
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { toggleWishlist as toggleWishlistAction } from "@/store/wishlistSlice";
 
 export function useWishlist() {
-  const ctx = useContext(WishlistContext);
-  if (!ctx) throw new Error("useWishlist must be used within a WishlistProvider");
-  return ctx;
+  const dispatch = useAppDispatch();
+  const productIds = useAppSelector((state) => state.wishlist.productIds);
+
+  const toggleWishlist = (productId: string) => dispatch(toggleWishlistAction(productId));
+  const isWishlisted = (productId: string) => productIds.includes(productId);
+
+  return { productIds, toggleWishlist, isWishlisted };
 }
