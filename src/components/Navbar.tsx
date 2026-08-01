@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -14,19 +14,26 @@ const links = [
   { to: "/#concierge", label: "Contact" },
 ];
 
+const HERO_ROUTES = ["/", "/watches", "/moissanite"];
+
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const hasHero = HERO_ROUTES.includes(location.pathname);
+  const [scrolledPast, setScrolledPast] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { itemCount } = useCart();
   const { productIds } = useWishlist();
   const { session } = useCustomerAuth();
   const { cartIconRef, bounceKey } = useCartFX();
 
+  const scrolled = scrolledPast || !hasHero;
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolledPast(window.scrollY > 24);
+    onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [location.pathname]);
 
   return (
     <>
