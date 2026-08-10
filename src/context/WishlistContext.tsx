@@ -9,4 +9,4 @@ export function useWishlist() {
   const isWishlisted = (productId: string) => productIds.includes(productId);
 
   return { productIds, toggleWishlist, isWishlisted };
-}
+} 

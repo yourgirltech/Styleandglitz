@@ -4,16 +4,19 @@ import { AnimatePresence, motion } from "framer-motion";
 export const DISCLAIMER_TEXT =
   "Style & Glitz is an independent jeweller and watch atelier. We are not affiliated with, endorsed by, or authorized by Rolex, Patek Philippe, Audemars Piguet, Cartier, Hublot, Casio G-Shock, or any other wristwatch brand referenced on this site. Product names and styles are used only to describe the design our pieces are inspired by and modelled after; every item sold is a Style & Glitz original build, not a product of the named brand.";
 
-export default function DisclaimerModal() {
+export default function DisclaimerModal({ onDismiss }: { onDismiss?: () => void }) {
   const [open, setOpen] = useState(false);
 
-  // Shows once every time the site is loaded 
+  // Shows once every time the site is loaded
   useEffect(() => {
     const timer = setTimeout(() => setOpen(true), 400);
     return () => clearTimeout(timer);
   }, []);
 
-  const dismiss = () => setOpen(false);
+  const dismiss = () => {
+    setOpen(false);
+    onDismiss?.();
+  };
 
   return (
     <AnimatePresence>
