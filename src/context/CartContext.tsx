@@ -6,7 +6,7 @@ import {
   setQuantity as setQuantityAction,
   clearCart as clearCartAction,
 } from "@/store/cartSlice";
-import { useProducts } from "@/context/ProductsContext";
+import { useProducts } from "@/context/ProductsContext";      
 
 export function useCart() {
   const dispatch = useAppDispatch();

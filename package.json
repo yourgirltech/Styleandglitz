@@ -11,6 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@n8n/chat": "^1.32.3",
     "@reduxjs/toolkit": "^2.12.0",
     "@supabase/supabase-js": "^2.45.4",
     "framer-motion": "^11.11.17",

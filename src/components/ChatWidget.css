@@ -1,0 +1,182 @@
+/*
+ * Maps @n8n/chat onto this project's tailwind.config.ts tokens and typographic
+ * system: font-heading (Cormorant Garamond) for the title, the site's mono
+ * "eyebrow" treatment for the subtitle/footer, font-body (Inter) for messages.
+ * Every rule below is prefixed with #n8n-chat so it out-specifies the
+ * library's own scoped styles without needing !important.
+ */
+#n8n-chat {
+  --chat--color--primary: #0f172a; /* forest */
+  --chat--color--primary-shade-50: #1e293b; /* forest-light */
+  --chat--color--primary--shade-100: #0b1120; /* forest-dark */
+  --chat--color--secondary: #c9a227; /* gold */
+  --chat--color-secondary-shade-50: #a3801f; /* gold-dark */
+  --chat--color-white: #faf8f4; /* cream */
+  --chat--color-light: #faf8f4; /* cream */
+  --chat--color-light-shade-50: #f1eee6; /* cream-dark */
+  --chat--color-light-shade-100: #e5e7eb; /* stone */
+  --chat--color-medium: #e5e7eb; /* stone */
+  --chat--color-dark: #0b1120; /* graphite */
+  --chat--color-disabled: #d1d5db; /* stone-dark */
+  --chat--color-typing: #1e293b; /* forest-light */
+
+  --chat--font-family: "Inter", sans-serif;
+
+  --chat--spacing: 1.05rem;
+  --chat--border-radius: 2px;
+  --chat--window--width: 400px;
+  --chat--window--height: 640px;
+  --chat--window--border-radius: 2px;
+  --chat--window--border: 1px solid rgba(201, 162, 39, 0.22);
+  --chat--message--border-radius: 2px;
+  --chat--input--border-radius: 2px;
+  --chat--input--container--border-radius: 2px;
+  --chat--input--button--border-radius: 2px;
+  --chat--button--border-radius: 2px;
+
+  --chat--body--background: #faf8f4; /* cream */
+
+  --chat--header--padding: 1.5rem 1.5rem 1.25rem;
+  --chat--header--background: #0f172a; /* forest */
+  --chat--header--color: #faf8f4; /* cream */
+  --chat--header--border-bottom: none;
+
+  --chat--message--bot--background: #f1eee6; /* cream-dark */
+  --chat--message--bot--color: #0b1120; /* graphite */
+  --chat--message--bot--border: 1px solid #e5e7eb; /* stone */
+  --chat--message--user--background: #0f172a; /* forest */
+  --chat--message--user--color: #faf8f4; /* cream */
+  --chat--message--user--border: none;
+
+  --chat--input--background: #ffffff;
+  --chat--input--text-color: #0b1120; /* graphite */
+  --chat--input--border: 1px solid #e5e7eb; /* stone */
+  --chat--input--border-active: 1px solid #c9a227; /* gold */
+  --chat--input--container--background: #faf8f4; /* cream */
+  --chat--input--container--border: 1px solid #d1d5db; /* stone-dark */
+
+  --chat--button--color--primary: #faf8f4; /* cream */
+  --chat--button--background--primary: #0f172a; /* forest */
+  --chat--button--border--primary: 1px solid #0f172a;
+  --chat--button--color--primary--hover: #faf8f4;
+  --chat--button--background--primary--hover: #1e293b; /* forest-light */
+  --chat--button--border--primary--hover: 1px solid #1e293b;
+  --chat--button--color--primary--disabled: #d1d5db;
+  --chat--button--background--primary--disabled: #e5e7eb;
+  --chat--button--border--primary--disabled: 1px solid #e5e7eb;
+
+  --chat--button--color--secondary: #0f172a; /* forest */
+  --chat--button--background--secondary: transparent;
+  --chat--button--border--secondary: 1px solid #c9a227; /* gold */
+  --chat--button--color--secondary--hover: #faf8f4;
+  --chat--button--background--secondary--hover: #a3801f; /* gold-dark */
+  --chat--button--border--secondary--hover: 1px solid #a3801f;
+
+  --chat--input--send--button--background: #0f172a; /* forest */
+  --chat--input--send--button--color: #faf8f4; /* cream */
+  --chat--input--send--button--background-hover: #1e293b; /* forest-light */
+  --chat--input--send--button--color-hover: #faf8f4;
+
+  --chat--toggle--size: 64px;
+  --chat--toggle--background: #0f172a; /* forest */
+  --chat--toggle--hover--background: #1e293b; /* forest-light */
+  --chat--toggle--active--background: #0b1120; /* forest-dark */
+  --chat--toggle--color: #faf8f4; /* cream */
+
+  --chat--footer--background: #faf8f4; /* cream */
+  --chat--footer--color: #e5e7eb; /* stone */
+  --chat--footer--border-top: none;
+}
+
+/* ---- Window: an elevated, gold-hairlined case rather than a flat card ---- */
+#n8n-chat .chat-window {
+  box-shadow: 0 24px 60px rgba(11, 17, 32, 0.28), 0 2px 0 rgba(201, 162, 39, 0.15);
+}
+
+/* ---- Header: serif title + tracked eyebrow subtitle, gold hairline below ---- */
+#n8n-chat .chat-header {
+  position: relative;
+}
+
+#n8n-chat .chat-header::after {
+  content: "";
+  position: absolute;
+  left: 1.5rem;
+  right: 1.5rem;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c9a227 50%, transparent);
+}
+
+#n8n-chat .chat-header .chat-heading h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+  font-size: 1.65rem;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+
+#n8n-chat .chat-header > p {
+  font-family: "IBM Plex Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.62rem;
+  color: rgba(250, 248, 244, 0.55);
+  margin: 0;
+}
+
+#n8n-chat .chat-close-button {
+  color: rgba(250, 248, 244, 0.75);
+  transition: color 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#n8n-chat .chat-close-button:hover {
+  color: #c9a227; /* gold */
+}
+
+/* ---- Launcher: a portrait medallion, not a chat-bubble/robot glyph ---- */
+#n8n-chat .chat-window-toggle {
+  position: relative;
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  box-shadow:
+    0 10px 30px rgba(11, 17, 32, 0.35),
+    0 0 22px rgba(201, 162, 39, 0.2);
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#n8n-chat .chat-window-toggle:hover {
+  transform: scale(1.06);
+  border-color: rgba(201, 162, 39, 0.55);
+  box-shadow:
+    0 14px 36px rgba(11, 17, 32, 0.4),
+    0 0 28px rgba(201, 162, 39, 0.3);
+}
+
+/* Hide the library's chat-bubble / chevron glyphs entirely */
+#n8n-chat .chat-window-toggle svg {
+  display: none;
+}
+
+/* Replace with a line-art human silhouette — the same mark used for the
+   site's own account icon (see UserIcon in Navbar.tsx) — so the assistant
+   reads as a person, not a bot. */
+#n8n-chat .chat-window-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FAF8F4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 20c0-4 3.5-7 8-7s8 3 8 7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 40%;
+}
+
+/* ---- Footer attribution: quiet, tracked, out of the way ---- */
+#n8n-chat .chat-powered-by {
+  font-family: "IBM Plex Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.58rem;
+  opacity: 0.4;
+}

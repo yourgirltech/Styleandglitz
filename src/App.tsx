@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -22,6 +22,7 @@ import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminProductForm from "@/pages/admin/AdminProductForm";
 import { CartFXProvider } from "@/context/CartFXContext";
 import CartFXOverlay from "@/components/CartFXOverlay";
+import ChatWidget from "@/components/ChatWidget";
 
 function PageTransition({ children }: { children: React.ReactNode }) {
   return (
@@ -66,13 +67,16 @@ function ScrollManager() {
 export default function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const [disclaimerAcknowledged, setDisclaimerAcknowledged] = useState(false);
 
   return (
     <AdminAuthProvider>
       <CartFXProvider>
         <div className="min-h-screen flex flex-col bg-cream">
           <ScrollManager />
-          {!isAdminRoute && <DisclaimerModal />}
+          {!isAdminRoute && (
+            <DisclaimerModal onDismiss={() => setDisclaimerAcknowledged(true)} />
+          )}
           {!isAdminRoute && <Navbar />}
           <main className="flex-1">
             <AnimatePresence mode="wait">
@@ -106,6 +110,7 @@ export default function App() {
           {!isAdminRoute && <Footer />}
         </div>
         {!isAdminRoute && <CartFXOverlay />}
+        {!isAdminRoute && disclaimerAcknowledged && <ChatWidget />}
       </CartFXProvider>
     </AdminAuthProvider>
   );
