@@ -147,7 +147,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.4 }}
-            className="fixed inset-x-0 top-16 md:top-[68px] h-[45vh] bg-cream/80 backdrop-blur-md z-50 flex flex-col shadow-[0_20px_40px_rgba(0,0,0,0.15)]"
+            className="fixed inset-x-0 top-16 md:top-[68px] max-h-[calc(100vh-4rem)] pb-8 bg-cream backdrop-blur-md z-50 flex flex-col overflow-y-auto shadow-[0_20px_40px_rgba(0,0,0,0.15)]"
           >
             <div className="flex justify-end p-6">
               <button
