@@ -34,10 +34,10 @@ export default function Footer() {
         <div className="md:col-span-3">
           <p className="eyebrow text-gold mb-5">Quick Links</p>
           <ul className="space-y-3 text-sm text-cream/70">
-            <li><Link to="/#shipping" className="hover:text-cream transition-colors">Shipping</Link></li>
-            <li><Link to="/#returns" className="hover:text-cream transition-colors">Returns</Link></li>
-            <li><Link to="/#privacy" className="hover:text-cream transition-colors">Privacy</Link></li>
-            <li><Link to="/#terms" className="hover:text-cream transition-colors">Terms</Link></li>
+            <li><Link to="/shipping" className="hover:text-cream transition-colors">Shipping</Link></li>
+            <li><Link to="/returns" className="hover:text-cream transition-colors">Returns</Link></li>
+            <li><Link to="/privacy" className="hover:text-cream transition-colors">Privacy</Link></li>
+            <li><Link to="/terms" className="hover:text-cream transition-colors">Terms</Link></li>
           </ul>
         </div>
 

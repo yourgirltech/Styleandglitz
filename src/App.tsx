@@ -13,6 +13,10 @@ import Signup from "@/pages/Signup";
 import Login from "@/pages/Login";
 import Account from "@/pages/Account";
 import CheckoutCallback from "@/pages/CheckoutCallback";
+import Shipping from "@/pages/Shipping";
+import Returns from "@/pages/Returns";
+import Privacy from "@/pages/Privacy";
+import Terms from "@/pages/Terms";
 import DisclaimerModal from "@/components/DisclaimerModal";
 import RequireCustomer from "@/components/RequireCustomer";
 import { AdminAuthProvider } from "@/context/AdminAuthContext";
@@ -100,6 +104,10 @@ export default function App() {
                   }
                 />
                 <Route path="/checkout/callback" element={<CheckoutCallback />} />
+                <Route path="/shipping" element={<PageTransition><Shipping /></PageTransition>} />
+                <Route path="/returns" element={<PageTransition><Returns /></PageTransition>} />
+                <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
+                <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin" element={<RequireAdmin><AdminDashboard /></RequireAdmin>} />
                 <Route path="/admin/products/new" element={<RequireAdmin><AdminProductForm /></RequireAdmin>} />
