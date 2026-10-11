@@ -2,7 +2,7 @@
 
 A full-stack e-commerce site for fine watches and GRA-certified VVS1 moissanite jewelry — built as a cinematic, boutique-style storefront rather than a generic shop template, with a complete backend (accounts, admin dashboard, and payments) behind it.
 
-**Live site:** https://styleandglitz.netlify.app
+> **In production for a client.** The live store runs on the client's own domain and isn't linked here. This repository is the build record: the full source, with customer data and credentials removed.
 
 ---
 
@@ -257,17 +257,17 @@ Switching between Paystack test and live mode only requires swapping `PAYSTACK_S
 
 ## Deployment
 
-Connected to Netlify via GitHub — every push to `main` triggers an automatic deploy.
+This repository deploys to a Netlify preview via GitHub — every push to `main` triggers an automatic deploy. The client's production store is deployed separately on their own domain.
 
 - **Build command:** `npm run build`
 - **Publish directory:** `dist`
 - **Required Netlify environment variables:** `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` — must be added in Netlify's site settings separately, since `.env.local` is git-ignored and never uploaded
-- **`VITE_N8N_CHAT_WEBHOOK_URL` is intentionally not set in Netlify yet** — it currently only exists in local `.env` for development testing. The AI assistant is fully built and live in n8n, but adding this variable to Netlify (making the chat bubble reachable by real customers) is a deliberate go-live step, not an oversight.
+- **`VITE_N8N_CHAT_WEBHOOK_URL` is not set on the preview** — so the chat bubble doesn't mount there and preview traffic never reaches the assistant. The assistant runs on the client's production store.
 - **`public/_redirects`** contains `/* /index.html 200` — required for a single-page app on Netlify, otherwise direct links to any route other than `/` 404
 
 ---
 
-## Known Gaps / Not Yet Done
+## Known Gaps in This Repository
 
 - **CI test automation** — Jest tests currently run locally only (`npm test`); a GitHub Actions workflow to run them automatically on every push/PR is planned but not yet wired up
 - **Component-level RTL tests** — coverage so far is the cart/wishlist reducers plus `ProductCard`; interaction tests for checkout, admin, and auth flows are the next planned addition
